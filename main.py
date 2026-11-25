@@ -1,3 +1,4 @@
+from posix import kill
 import sys
 import pygame
 
@@ -41,11 +42,19 @@ def main():
                 return
 
         updatable.update(dt)
-        for sprite in asteroids:
-            if player.collides_with(sprite):
+        for asteroid in asteroids:
+            if player.collides_with(asteroid):
                 log_event("player_hit")
                 print("Game over!")
                 sys.exit()
+
+            for shot in shots:
+                if asteroid.collides_with(shot):
+                    log_event("asteroid_shot")
+                    shot.kill()
+                    asteroid.split()
+
+
 
         screen.fill("black")
 
